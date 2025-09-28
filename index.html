@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Números da Mega Sena com IA</title>
+    <title>Gerador de Números da Mega Sena</title>
     <!-- Carrega Tailwind CSS para estilização moderna e responsiva -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0f4f8; /* Fundo suave */
         }
-        /* Estilo para a "bola" de número (Gerador Aleatório) */
+        /* Estilo para a "bola" de número */
         .number-ball {
             width: 70px;
             height: 70px;
@@ -27,23 +27,7 @@
             font-weight: 900;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra mais profunda */
             transition: transform 0.2s, box-shadow 0.2s;
-            flex-shrink: 0; /* Evita que o número encolha em telas pequenas */
-        }
-
-        /* Estilo para a "bola" de número temático (Gerador IA) */
-        .thematic-ball {
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%; /* Faz o círculo */
-            background: linear-gradient(145deg, #f59e0b, #d97706); /* Amarelo/Laranja */
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 900;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0; 
+            flex-shrink: 0;
         }
 
         /* Estilo para as bolinhas em telas menores (Mobile-first optimization) */
@@ -52,11 +36,6 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1.5rem;
-            }
-            .thematic-ball {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
             }
         }
 
@@ -81,106 +60,28 @@
     <div class="bg-white p-6 md:p-10 rounded-xl shadow-2xl max-w-4xl w-full text-center">
         
         <h1 class="text-3xl md:text-5xl font-extrabold text-gray-800 mb-2">Gerador <span class="text-emerald-600">Mega Sena</span></h1>
-        <p class="text-gray-500 mb-8 text-lg">6 números únicos de 01 a 60.</p>
+        <p class="text-gray-500 mb-8 text-lg">6 números únicos e completamente aleatórios de 01 a 60.</p>
 
         <!-- Área de Exibição dos Números ALEATÓRIOS. flex-wrap e gap-4/md:gap-6 para responsividade -->
         <div id="numbers-display" class="flex flex-wrap justify-center gap-4 md:gap-6 mb-10 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px]">
             <!-- Os números serão inseridos aqui pelo JavaScript -->
         </div>
 
-        <!-- Controles: Botões de Geração e Análise. flex-col (mobile) vs flex-row (desktop) -->
-        <div class="flex flex-col md:flex-row justify-center gap-4 mb-8">
-            <!-- Botão de Geração -->
+        <!-- Controles: Botão de Geração -->
+        <div class="flex justify-center">
             <button id="generate-button"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-blue-300/50 focus:outline-none focus:ring-4 focus:ring-blue-500/50 w-full md:w-auto">
-                Gerar Novas Dezenas
+                Gerar Novas Dezenas Aleatórias
             </button>
-            
-            <!-- Botão de Análise LLM -->
-            <button id="analyze-button"
-                    class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-purple-300/50 focus:outline-none focus:ring-4 focus:ring-purple-500/50 flex items-center justify-center disabled:opacity-50 w-full md:w-auto"
-                    disabled>
-                Análise de Sorte ✨
-            </button>
-        </div>
-
-        <!-- Área de Análise LLM -->
-        <div id="analysis-output" class="mt-4 p-5 bg-purple-50 rounded-lg border border-purple-200 text-gray-700 text-left hidden">
-            <div id="analysis-loading" class="flex items-center justify-center space-x-2 hidden">
-                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
-                <p class="ml-2">Analisando sua sorte com o Gemini...</p>
-            </div>
-            <p id="analysis-text" class="italic text-lg"></p>
-        </div>
-
-        <!-- Divisor entre funcionalidades -->
-        <div class="my-8 border-t border-gray-200"></div>
-
-        <!-- Área de Palpite Temático com IA (Nova Funcionalidade Gemini) -->
-        <div class="p-6 bg-yellow-50 rounded-xl border border-yellow-200 shadow-inner">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-center">
-                Palpite Temático com IA ✨
-            </h2>
-            <p class="text-gray-600 mb-4">Insira um tema (ex: Aniversário, Praia, Viagem, Sorte) e o Gemini criará uma sequência baseada na sua ideia!</p>
-            
-            <!-- Input w-full garante largura total em todas as telas -->
-            <input type="text" id="theme-input" placeholder="Digite seu tema aqui (ex: Meu primeiro milhão)"
-                   class="w-full p-3 border border-yellow-300 rounded-lg mb-4 focus:ring-yellow-500 focus:border-yellow-500">
-            
-            <!-- Botão w-full garante largura total em todas as telas -->
-            <button id="thematic-button"
-                    class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-yellow-300/50 focus:outline-none focus:ring-4 focus:ring-yellow-500/50 flex items-center justify-center w-full disabled:opacity-50">
-                Gerar Palpite Temático ✨
-            </button>
-            
-            <!-- Output do Palpite Temático -->
-            <div id="thematic-output" class="mt-4 p-4 bg-white rounded-lg border border-yellow-300 text-gray-700 text-left hidden">
-                <div id="thematic-loading" class="flex items-center justify-center space-x-2 hidden">
-                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-yellow-600"></div>
-                    <p class="ml-2">Criando seu palpite temático...</p>
-                </div>
-                <!-- Números temáticos: flex-wrap e justify-center -->
-                <div id="thematic-numbers-display" class="flex flex-wrap justify-center gap-3 mb-3"></div>
-                <!-- Rationale temático será exibido aqui -->
-                <p id="thematic-rationale" class="text-sm italic text-yellow-800 border-t border-yellow-200 pt-3 mt-3"></p>
-            </div>
         </div>
         
         <p class="mt-8 text-sm text-gray-400">Boa sorte!</p>
     </div>
 
     <script type="module">
-        // Importações necessárias para Firebase Auth
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // Importações e variáveis de ambiente Firebase foram removidas, pois não são mais necessárias.
 
-        // Variáveis globais de ambiente (fornecidas pela Canvas)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let auth;
         let currentNumbers = []; // Armazena os números gerados atualmente
-        
-        // Inicialização do Firebase e Autenticação
-        async function initFirebase() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-
-                // Tenta fazer login com o token personalizado, senão, login anônimo.
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                console.log("Firebase e Auth inicializados. User ID:", auth.currentUser?.uid);
-            } catch (error) {
-                console.error("Erro na inicialização do Firebase ou autenticação. Continuando sem análise da IA.", error);
-            }
-            // Gerar números iniciais assim que o ambiente estiver pronto, independentemente do sucesso da Auth
-            generateNumbers();
-        }
 
         // Função principal para gerar e exibir os números
         function generateNumbers() {
@@ -201,11 +102,6 @@
             const selectedNumbers = allNumbers.slice(0, count);
             selectedNumbers.sort((a, b) => a - b); // Ordena
             currentNumbers = selectedNumbers; // Atualiza a variável global
-
-            // Habilita o botão de análise e esconde a análise anterior
-            document.getElementById('analyze-button').disabled = false;
-            document.getElementById('analysis-output').classList.add('hidden');
-            document.getElementById('analysis-text').textContent = '';
             
             // 4. Limpa a área de exibição
             displayElement.innerHTML = '';
@@ -221,214 +117,11 @@
             });
         }
         
-        /**
-         * Função que chama a Gemini API para analisar os números gerados.
-         */
-        async function analyzeNumbers() {
-            if (currentNumbers.length === 0) return;
-
-            const analysisOutput = document.getElementById('analysis-output');
-            const analysisText = document.getElementById('analysis-text');
-            const loading = document.getElementById('analysis-loading');
-            const analyzeButton = document.getElementById('analyze-button');
-            
-            // Exibe o painel de análise e o estado de carregamento
-            analysisOutput.classList.remove('hidden');
-            analysisText.textContent = '';
-            loading.classList.remove('hidden');
-            analyzeButton.disabled = true;
-
-            const formattedNumbers = currentNumbers.map(n => String(n).padStart(2, '0')).join(', ');
-
-            // Instruções de Sistema para a IA
-            const systemPrompt = `Você é um analista de loteria espirituoso e divertido, especializado em encontrar "padrões" em números aleatórios de loteria. Sua análise deve ser breve (máximo de um parágrafo), divertida, otimista e deve comentar sobre a distribuição, a frequência de números altos/baixos e ímpares/pares, e deve dar um título engraçado ou um tema à sequência. NUNCA sugira que o usuário realmente tem chances melhores ou pioras, apenas divirta-o. Responda em Português.`;
-            
-            const userQuery = `Analise a seguinte sequência de 6 números da Mega Sena: ${formattedNumbers}.`;
-            
-            const apiKey = ""; // A chave é fornecida pelo ambiente
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-            
-            let resultText = "Não foi possível realizar a análise da sua sequência. Tente gerar novos números e clicar novamente.";
-
-            // Lógica de Exponential Backoff para retentar em caso de falha temporária
-            const maxRetries = 5;
-            let delay = 1000;
-            
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    // Usando fetch para maior compatibilidade com a injeção de credenciais
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        // Retenta apenas para 401 (Auth) ou 429 (Rate Limit)
-                        if ((response.status === 401 || response.status === 429) && attempt < maxRetries - 1) {
-                            console.error(`Tentativa ${attempt + 1} falhou no Gemini API (Status ${response.status}). Retentando...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2;
-                            continue;
-                        }
-                        // Lança o erro para 403 e outros erros não-retentáveis
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        resultText = candidate.content.parts[0].text;
-                    }
-                    break; // Sucesso, sai do loop
-                } catch (error) {
-                    console.error(`Tentativa ${attempt + 1} falhou no Gemini API:`, error);
-                    // Erros de rede ou outros erros que não são retentados pelo status HTTP
-                    break; 
-                }
-            }
-
-            // Exibe o resultado e limpa o estado de carregamento
-            loading.classList.add('hidden');
-            analysisText.textContent = resultText;
-            analyzeButton.disabled = false;
-        }
-
-        /**
-         * Nova função que chama a Gemini API para gerar números baseados em um tema.
-         */
-        async function generateThematicGuess() {
-            const themeInput = document.getElementById('theme-input');
-            const theme = themeInput.value.trim();
-
-            const outputDiv = document.getElementById('thematic-output');
-            const numbersDisplay = document.getElementById('thematic-numbers-display');
-            const rationaleText = document.getElementById('thematic-rationale');
-            const loading = document.getElementById('thematic-loading');
-            const thematicButton = document.getElementById('thematic-button');
-
-            if (!theme) {
-                // Mensagem suave para o usuário
-                document.getElementById('analysis-text').textContent = "Por favor, digite um tema válido na caixa de texto para que a IA possa criar seu palpite!";
-                document.getElementById('analysis-output').classList.remove('hidden');
-                outputDiv.classList.add('hidden'); // Esconde a área temática para não confundir
-                return;
-            }
-
-            // Setup UI for loading
-            outputDiv.classList.remove('hidden');
-            numbersDisplay.innerHTML = '';
-            rationaleText.textContent = '';
-            loading.classList.remove('hidden');
-            thematicButton.disabled = true;
-
-            // System Prompt e User Query
-            const systemPrompt = `Você é um gerador de palpites de loteria criativo e otimista. Sua tarefa é criar 6 números únicos entre 1 e 60 e uma justificativa criativa e divertida (máximo 50 palavras) baseada no tema fornecido. O formato de saída é ESTREITO e DEVE ser exatamente: NUMBERS: X, Y, Z, A, B, C | RATIONALE: [Sua justificativa]. Os números devem ser sempre separados por vírgula e espaço, e ordenados do menor para o maior.`;
-            const userQuery = `Gere 6 números da Mega Sena (1-60) e a justificativa para o tema: ${theme}`;
-
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-            
-            let resultText = "Não foi possível gerar o palpite temático. Tente novamente.";
-            let delay = 1000;
-            const maxRetries = 5;
-
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        if ((response.status === 401 || response.status === 429) && attempt < maxRetries - 1) {
-                            console.error(`Tentativa ${attempt + 1} falhou no Gemini API (Status ${response.status}). Retentando...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2;
-                            continue;
-                        }
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        resultText = candidate.content.parts[0].text.trim();
-                    }
-                    break;
-                } catch (error) {
-                    console.error(`Tentativa ${attempt + 1} falhou no Gemini API:`, error);
-                    break; 
-                }
-            }
-            
-            // Parsing the result
-            loading.classList.add('hidden');
-            thematicButton.disabled = false;
-            
-            try {
-                const parts = resultText.split('|');
-                let numbersStr = '';
-                let rationaleStr = '';
-
-                if (parts.length >= 2) {
-                    numbersStr = parts.find(p => p.startsWith('NUMBERS:'))?.replace('NUMBERS:', '').trim() || '';
-                    rationaleStr = parts.find(p => p.startsWith('RATIONALE:'))?.replace('RATIONALE:', '').trim() || resultText;
-                } else {
-                    rationaleStr = resultText;
-                }
-
-                // Extrai números e filtra para garantir que são válidos (1-60)
-                const thematicNumbers = numbersStr
-                    .split(',')
-                    .map(s => parseInt(s.trim()))
-                    .filter(n => !isNaN(n) && n >= 1 && n <= 60);
-
-                if (thematicNumbers.length === 6) {
-                    numbersDisplay.innerHTML = ''; // Limpa a exibição anterior
-                    thematicNumbers.sort((a, b) => a - b).forEach(number => {
-                        const numberBall = document.createElement('div');
-                        numberBall.textContent = String(number).padStart(2, '0');
-                        numberBall.className = 'thematic-ball';
-                        numbersDisplay.appendChild(numberBall);
-                    });
-                    rationaleText.textContent = rationaleStr;
-                } else {
-                    // Fallback se o parsing falhar ou a IA não retornar 6 números válidos
-                    rationaleText.textContent = `A IA gerou a seguinte resposta, mas não consegui extrair 6 números únicos e válidos (1-60). Resposta bruta: "${resultText}". Por favor, tente um tema diferente.`;
-                    numbersDisplay.innerHTML = `<p class="text-red-500 font-semibold">Erro na geração do palpite. Tente novamente.</p>`;
-                }
-            } catch (e) {
-                rationaleText.textContent = `Erro inesperado ao processar a resposta da IA.`;
-                numbersDisplay.innerHTML = `<p class="text-red-500 font-semibold">Erro inesperado.</p>`;
-                console.error("Erro de parsing:", e);
-            }
-        }
-
-        // Adiciona os eventos de clique aos botões
+        // Adiciona o evento de clique ao botão
         document.getElementById('generate-button').addEventListener('click', generateNumbers);
-        document.getElementById('analyze-button').addEventListener('click', analyzeNumbers);
-        document.getElementById('thematic-button').addEventListener('click', generateThematicGuess);
 
-        // Inicia o Firebase e gera os números ao carregar a página
-        window.onload = initFirebase;
+        // Gera os números iniciais ao carregar a página
+        window.onload = generateNumbers;
     </script>
 </body>
 </html>
