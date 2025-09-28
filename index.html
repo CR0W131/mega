@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Números da Mega Sena</title>
+    
+    <!-- FAVICON ADICIONADO AQUI -->
+    <!-- Usando a mesma imagem placeholder (bolinha verde com texto) -->
+    <link rel="icon" type="image/png" href="https://placehold.co/200x200/059669/ffffff?text=MS">
+    <!----------------------------->
+
     <!-- Carrega Tailwind CSS para estilização moderna e responsiva -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -60,6 +66,9 @@
     <div class="bg-white p-6 md:p-10 rounded-xl shadow-2xl max-w-4xl w-full text-center">
         
         <h1 class="text-3xl md:text-5xl font-extrabold text-gray-800 mb-2">Gerador <span class="text-emerald-600">Mega Sena</span></h1>
+        
+        <!-- A IMAGEM CENTRAL FOI REMOVIDA DAQUI -->
+        
         <p class="text-gray-500 mb-8 text-lg">6 números únicos e completamente aleatórios de 01 a 60.</p>
 
         <!-- Área de Exibição dos Números ALEATÓRIOS. flex-wrap e gap-4/md:gap-6 para responsividade -->
@@ -79,8 +88,6 @@
     </div>
 
     <script type="module">
-        // Importações e variáveis de ambiente Firebase foram removidas, pois não são mais necessárias.
-
         let currentNumbers = []; // Armazena os números gerados atualmente
 
         // Função principal para gerar e exibir os números
